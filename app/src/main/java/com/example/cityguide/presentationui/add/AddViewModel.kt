@@ -23,13 +23,15 @@ class AddScreenViewModel @Inject constructor(
         category: String = _state.value.category,
         description: String = _state.value.description,
         address: String = _state.value.address,
-        rating: String = _state.value.rating
+        rating: String = _state.value.rating,
+        image: ByteArray? = _state.value.image
     ) {
         _state.value = _state.value.copy(
             placeName = placeName,
             category = category,
             description = description,
             address = address,
+            image = image,
             rating = rating
         )
     }
@@ -50,7 +52,8 @@ class AddScreenViewModel @Inject constructor(
             category = current.category,
             description = current.description,
             address = current.address,
-            rating = ratingDouble
+            rating = ratingDouble,
+            image = current.image
         )
 
         viewModelScope.launch {

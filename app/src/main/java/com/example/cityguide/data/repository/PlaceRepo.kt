@@ -22,13 +22,7 @@ class PlaceRepo (private val dao: PlaceDao){
         return dao.getPlaceByName(name)
     }
 
-    suspend fun updatePlace(place: PlaceEntity) {
-        dao.updatePlace(place)
-    }
 
-    suspend fun deleteAllPlaces() {
-        dao.deleteAllPlaces()
-    }
 
     fun getPlacesByCategory(category: String): Flow<List<PlaceEntity>> {
         return dao.getPlacesByCategory(category)

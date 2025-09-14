@@ -7,6 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cityguide.presentationui.home.PlaceItem
@@ -21,8 +23,14 @@ fun BookmarkScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Bookmarked Places") }
+            CenterAlignedTopAppBar(
+                title = {
+                    Text("Bookmarked Places", style = MaterialTheme.typography.bodyLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, fontSize = 30.sp)
+
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFda0c49)
+                )
             )
         }
     ) { padding ->

@@ -7,7 +7,7 @@ import com.example.cityguide.data.local.res.PlaceEntity
 
 @Database(
     entities = [PlaceEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
