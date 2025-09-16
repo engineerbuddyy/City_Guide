@@ -293,7 +293,7 @@ fun PlaceItem(
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete Place",
-                    tint = Color.Blue
+                    tint = Color.DarkGray
                 )
             }
         }

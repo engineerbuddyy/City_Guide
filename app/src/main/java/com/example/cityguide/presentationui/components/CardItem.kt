@@ -157,7 +157,7 @@ fun CardItemUI(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (p.isBookmarked) MaterialTheme.colorScheme.error else Color.Black
+                            containerColor = if (p.isBookmarked) MaterialTheme.colorScheme.error else Color.DarkGray
                         )
                     ) {
                         Text(
