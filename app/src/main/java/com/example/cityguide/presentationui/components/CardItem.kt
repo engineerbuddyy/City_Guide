@@ -40,136 +40,116 @@ fun CardItemUI(
                 title = {
                     Text(
                         "Place Details",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        fontSize = 30.sp
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp,
+                        color = Color.White,
                     )
-                }, navigationIcon = {
+
+                },
+                navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
-                }, colors = TopAppBarDefaults.topAppBarColors(
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color(0xFFda0c49)
-                )
+                ),
+                modifier = Modifier.height(90.dp)
             )
         }
-
     ) { padding ->
         place?.let { p ->
-
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.Start
+                // Title
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.cardElevation(8.dp)
                 ) {
-                    // Title
-                    Card(
-                        modifier = Modifier.
-                        wrapContentSize(),
-                        shape = RoundedCornerShape(16.dp),
-                        elevation = CardDefaults.cardElevation(6.dp)
-                    ){
-                        Text(
-                            text = p.placeName,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontSize = 40.sp,
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = Color.DarkGray,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp),
-
-                            textAlign = TextAlign.Center
-                        )
-
-                    }
-
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Image
-                    p.image?.let {
-                        Image(
-                            bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
-                            contentDescription = p.placeName,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(400.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(MaterialTheme.colorScheme.surfaceVariant),
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
-
-                    // Category & Rating
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = p.category,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 35.sp,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
-                        // ⭐ Use RatingBar instead of text
-                        RatingBar(rating = place!!.rating ?: 0.0, modifier = Modifier.padding(end = 8.dp))
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Description
                     Text(
-                        text = p.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 25.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(start = 10.dp)
+                        text = p.placeName,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp,
+                        color = Color.DarkGray,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 8.dp)
                     )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Address
-                    Text(
-                        text = "📍 ${p.address}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Bookmark button
-                    Button(
-                        onClick = { viewModel.toggleBookmark(p) },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (p.isBookmarked) MaterialTheme.colorScheme.error else Color.DarkGray
-                        )
-                    ) {
-                        Text(
-                            text = if (p.isBookmarked) "Remove Bookmark" else "Bookmark Place",
-                            color = Color.White
-                        )
-                    }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                p.image?.let {
+                    Image(
+                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
+                        contentDescription = p.placeName,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(400.dp)
+                            .clip(RoundedCornerShape(16.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AssistChip(
+                        onClick = {},
+                        label = { Text(text = p.category, fontSize = 18.sp, fontWeight = FontWeight.Bold) },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = Color(0xFFf0f0f0),
+                            labelColor = Color.DarkGray
+                        )
+                    )
+
+                    RatingBar(rating = p.rating ?: 0.0)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = p.description,
+                    fontSize = 20.sp,
+                    color = Color.DarkGray,
+                    lineHeight = 28.sp
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "📍 ${p.address}",
+                    fontSize = 18.sp,
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = { viewModel.toggleBookmark(p) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (p.isBookmarked) Color(0xFFda0c49) else Color.DarkGray
+                    )
+                ) {
+                    Text(
+                        text = if (p.isBookmarked) "Remove Bookmark" else "Bookmark Place",
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
             }
-
         }
-
-
     }
 }

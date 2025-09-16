@@ -18,8 +18,6 @@ interface PlaceDao{
     @Query("SELECT * FROM places")
     fun getAllPlaces(): Flow<List<PlaceEntity>>
 
-//    suspend fun getPlaceById(id: Int): PlaceEntity?
-
     @Query("SELECT * FROM places WHERE placeName = :name")
     suspend fun getPlaceByName(name: String): PlaceEntity?
 
@@ -32,8 +30,6 @@ interface PlaceDao{
     @Query("SELECT * FROM places WHERE category = :category")
     fun getPlacesByCategory(category: String): Flow<List<PlaceEntity>>
 
-//    suspend fun getPlacesByRating(rating: Double): List<PlaceEntity>
-
     @Query("UPDATE places SET isBookmarked = :isBookmarked WHERE id = :id")
     suspend fun updateBookmark(id: Int, isBookmarked: Boolean)
 
@@ -43,13 +39,6 @@ interface PlaceDao{
     @Query("SELECT * FROM places WHERE placeName LIKE '%' || :query || '%' ")
     fun getPlacesBySearchQuery(query: String): Flow<List<PlaceEntity>>
 
-//    suspend fun getPlacesByLocation(latitude: Double, longitude: Double): List<PlaceEntity>
-
-//    suspend fun getPlacesByDistance(distance: Double): List<PlaceEntity>
-
-//    suspend fun getPlacesByPriceRange(minPrice: Double, maxPrice: Double): List<PlaceEntity>
-
-//    suspend fun getPlacesByOpeningHours(openingHours: String): List<PlaceEntity>
 
 
 }

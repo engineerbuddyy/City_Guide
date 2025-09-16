@@ -18,31 +18,14 @@ class PlaceRepo (private val dao: PlaceDao){
         return dao.getAllPlaces()
     }
 
-    suspend fun getPlaceByName(name: String): PlaceEntity? {
-        return dao.getPlaceByName(name)
-    }
-
-
-
-    fun getPlacesByCategory(category: String): Flow<List<PlaceEntity>> {
-        return dao.getPlacesByCategory(category)
-    }
-
 
     fun getPlacesByBookmark(isBookmarked: Boolean): Flow<List<PlaceEntity>> {
         return dao.getPlacesByBookmark(isBookmarked)
     }
 
-    fun getPlacesBySearchQuery(query: String): Flow<List<PlaceEntity>> {
-        return dao.getPlacesBySearchQuery(query)
-    }
-
     suspend fun updateBookmark(id: Int, isBookmarked: Boolean) {
         dao.updateBookmark(id, isBookmarked)
     }
-
-
-
 
 
 }

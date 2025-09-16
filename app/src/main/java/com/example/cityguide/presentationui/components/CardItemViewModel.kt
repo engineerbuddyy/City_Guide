@@ -16,7 +16,6 @@ class CardItemViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun getPlaceById(id: Int): Flow<PlaceEntity?> {
-        // You can add getPlaceById in Dao/Repo
         return repo.getAllPlaces().map { list -> list.find { it.id == id } }
     }
 

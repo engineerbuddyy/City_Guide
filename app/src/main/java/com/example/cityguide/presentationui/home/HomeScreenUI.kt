@@ -1,5 +1,6 @@
 package com.example.cityguide.presentationui.home
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,8 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,8 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cityguide.data.local.res.PlaceEntity
 import com.example.cityguide.Navigation.Routes
-import com.example.cityguide.presentationui.animation.HeartConfig
-import androidx.compose.material.icons.rounded.StarHalf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.cityguide.R
 import com.example.cityguide.presentationui.RatingBar
@@ -48,10 +47,11 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by rememberSaveable { mutableStateOf("") }
 
-    // STEP 4A: hearts state + coroutine scope + config
-    val hearts = remember { mutableStateListOf<Int>() }
-    val scope = rememberCoroutineScope()
-    val config = remember { HeartConfig(radiusMultiplier = 1f, delayDuration = 120L) }
+
+
+  //  val hearts = remember { mutableStateListOf<Int>() }
+  //  val scope = rememberCoroutineScope()
+   // val config = remember { HeartConfig(radiusMultiplier = 1f, delayDuration = 120L) }
 
     // Categories list
     val categories = listOf(
@@ -144,7 +144,6 @@ fun HomeScreen(
                         .padding(padding)
                         .fillMaxSize()
                 ) {
-                    // 🔍 Search Bar
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
@@ -156,7 +155,6 @@ fun HomeScreen(
                         singleLine = true
                     )
 
-                    // 🔹 Category Chips
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -187,7 +185,7 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // 📜 Filtered list
+
                     val filteredPlaces = state.places.filter {
                         (selectedCategory.isBlank() || it.category.equals(
                             selectedCategory,
@@ -218,10 +216,12 @@ fun PlaceItem(
     navController: NavController,
     HomeScreenViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .height(130.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
@@ -229,74 +229,101 @@ fun PlaceItem(
                     }
                 )
             },
-        elevation = CardDefaults.cardElevation(6.dp),
-        shape = RoundedCornerShape(12.dp)
+        elevation = CardDefaults.cardElevation(10.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFDFDFD)) // light background
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 🖼️ Place image on left
-            place.image?.let {
-                Image(
-                    bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
-                    contentDescription = place.placeName,
-                    modifier = Modifier
-                        .size(70.dp)
-                        .aspectRatio(1f)
-                        .padding(end = 12.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
-            } ?: Box( // placeholder if no image
+            Box(
                 modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.LightGray),
-                contentAlignment = Alignment.Center
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(14.dp))
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.noimg),
-                    contentDescription = "Sample Image",
-                    modifier = Modifier.size(45.dp)
-                )
-
+                place.image?.let {
+                    Image(
+                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
+                        contentDescription = place.placeName,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } ?: Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.LightGray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.noimg),
+                        contentDescription = "Sample Image",
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
             }
 
-            // 📋 Details on right
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 20.dp),
+            Spacer(modifier = Modifier.width(16.dp))
 
+            // Details Column
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = place.placeName,
                     maxLines = 2,
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-
+                        fontSize = 22.sp,
+                        color = Color.Black
                     )
                 )
-
-                Spacer(modifier = Modifier.height(7.dp))
-
-                // ⭐ Use RatingBar instead of text
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = place.category,
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(6.dp))
                 RatingBar(rating = place.rating ?: 0.0)
             }
-            // 🗑️ Delete Button
-            IconButton(
-                onClick = { HomeScreenViewModel.deletePlace(place) }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete Place",
-                    tint = Color.DarkGray
-                )
+                IconButton(
+                    onClick = { HomeScreenViewModel.deletePlace(place) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete Place",
+                        tint = Color(0xFFB0B0B0)
+                    )
+                }
+
+                IconButton(onClick = {
+                    val shareText = buildString {
+                        append("📍 ${place.placeName}\n")
+                        append("📍 ${place.address}\n")
+                        append("⭐ ${place.rating}\n")
+                        append("📂 ${place.category}\n")
+                    }
+                    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_TEXT, shareText)
+                        type = "text/plain"
+                    }
+                    context.startActivity(Intent.createChooser(sendIntent, "Share via"))
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share",
+                        tint = Color(0xFF4CAF50)
+                    )
+                }
             }
         }
     }
 }
-

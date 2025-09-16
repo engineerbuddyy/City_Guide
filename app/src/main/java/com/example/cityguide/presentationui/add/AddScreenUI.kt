@@ -30,18 +30,18 @@ fun AddScreenUI(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    // Launcher for picking image
+
     val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             val inputStream = context.contentResolver.openInputStream(it)
             val byteArray = inputStream?.readBytes()
             inputStream?.close()
-            viewModel.onValueChange(image = byteArray) // save in state
+            viewModel.onValueChange(image = byteArray)
         }
         Log.d("AddScreenUI", "Selected Image URI: $uri")
     }
 
-    // ✅ Box to center content both vertically & horizontally
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -54,14 +54,13 @@ fun AddScreenUI(
                 .padding(top=10.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp) // nice spacing
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             if (state.error != null) {
                 Text(text = state.error!!, color = MaterialTheme.colorScheme.error)
             }
 
             if(state.image != null){
-                // Selected image preview
                 state.image?.let {
                     Image(
                         bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
@@ -74,7 +73,7 @@ fun AddScreenUI(
 
             }
             else{
-                // Default sample image
+
                 Image(
                     painter = painterResource(id = R.drawable.mainimg),
                     contentDescription = "Sample Image",
@@ -85,7 +84,6 @@ fun AddScreenUI(
 
             }
 
-
             Button(
                 onClick = { pickImage.launch("image/*") },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFda0c49))
@@ -93,7 +91,6 @@ fun AddScreenUI(
                 Text("Pick Image")
             }
 
-            // Input fields
             OutlinedTextField(
                 value = state.placeName,
                 onValueChange = { viewModel.onValueChange(placeName = it) },
@@ -134,7 +131,6 @@ fun AddScreenUI(
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
 
-            // Submit button
             Button(
                 onClick = { viewModel.addPlace { navController.popBackStack() } },
                 modifier = Modifier.fillMaxWidth(0.9f),

@@ -17,7 +17,6 @@ import com.example.cityguide.presentationui.home.HomeScreenViewModel
 
 @Composable
 fun AppNav(
-    modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
@@ -36,9 +35,7 @@ fun AppNav(
             AddScreenUI(navController = navController)
         }
 
-
-
-        // CardItem Screen with argument
+        // CardItem Screen
         composable(
             route = "card_item/{placeId}",
             arguments = listOf(
@@ -52,9 +49,6 @@ fun AppNav(
         composable(Routes.BookmarkScreen.route) {
             BookmarkScreen(navController = navController)
         }
-
-
-
 
     }
 }

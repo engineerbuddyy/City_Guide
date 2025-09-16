@@ -6,6 +6,5 @@ sealed class Routes(val route: String) {
     object CardItem : Routes("card_item/{placeId}") {
         fun createRoute(placeId: Int) = "card_item/$placeId"
     }
-    object SearchScreen : Routes("search_screen")
     object BookmarkScreen : Routes("bookmark_screen")
 }

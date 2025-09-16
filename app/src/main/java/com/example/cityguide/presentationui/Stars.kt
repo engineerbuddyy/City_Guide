@@ -17,7 +17,6 @@ fun RatingBar(rating: Double, modifier: Modifier = Modifier) {
         val fullStars = rating.toInt()
         val hasHalfStar = (rating - fullStars) in 0.1..0.9
 
-        // ⭐ Full stars
         repeat(fullStars) {
             Icon(
                 imageVector = Icons.Filled.Star,
@@ -27,7 +26,6 @@ fun RatingBar(rating: Double, modifier: Modifier = Modifier) {
             )
         }
 
-        // 🌗 Half star
         if (hasHalfStar) {
             Icon(
                 imageVector = Icons.Rounded.StarHalf,

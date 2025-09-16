@@ -59,7 +59,7 @@ class AddScreenViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.insertPlace(place)
-                _state.value = AddScreenState() // reset after save
+                _state.value = AddScreenState()
                 onSuccess()
             } catch (e: Exception) {
                 _state.value = current.copy(isSaving = false, error = e.message)
