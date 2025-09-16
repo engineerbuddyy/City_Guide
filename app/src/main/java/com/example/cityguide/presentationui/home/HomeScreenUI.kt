@@ -2,6 +2,7 @@ package com.example.cityguide.presentationui.home
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -48,10 +49,9 @@ fun HomeScreen(
     var selectedCategory by rememberSaveable { mutableStateOf("") }
 
 
-
-  //  val hearts = remember { mutableStateListOf<Int>() }
-  //  val scope = rememberCoroutineScope()
-   // val config = remember { HeartConfig(radiusMultiplier = 1f, delayDuration = 120L) }
+    //  val hearts = remember { mutableStateListOf<Int>() }
+    //  val scope = rememberCoroutineScope()
+    // val config = remember { HeartConfig(radiusMultiplier = 1f, delayDuration = 120L) }
 
     // Categories list
     val categories = listOf(
@@ -123,7 +123,7 @@ fun HomeScreen(
             state.isLoading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
@@ -132,7 +132,7 @@ fun HomeScreen(
             state.error != null -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(text = state.error ?: "Unknown Error")
                 }
@@ -185,7 +185,6 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-
                     val filteredPlaces = state.places.filter {
                         (selectedCategory.isBlank() || it.category.equals(
                             selectedCategory,
@@ -193,7 +192,6 @@ fun HomeScreen(
                         )) &&
                                 it.placeName.contains(searchQuery, ignoreCase = true)
                     }
-
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
@@ -204,10 +202,9 @@ fun HomeScreen(
                 }
             }
         }
-
     }
-
 }
+
 
 
 @Composable
@@ -305,12 +302,17 @@ fun PlaceItem(
                 }
 
                 IconButton(onClick = {
+
                     val shareText = buildString {
+                        append("📌 Place Details:\n\n")
                         append("📍 ${place.placeName}\n")
-                        append("📍 ${place.address}\n")
-                        append("⭐ ${place.rating}\n")
-                        append("📂 ${place.category}\n")
+                        append("⭐ Rating : ${place.rating}\n")
+                        append("\uD83C\uDFDB\uFE0F Category: ${place.category}\n")
+
+                        append("\n🌍 https://www.google.com/maps/search/?api=1&query=${Uri.encode(place.address)}")
+
                     }
+
                     val sendIntent = Intent(Intent.ACTION_SEND).apply {
                         putExtra(Intent.EXTRA_TEXT, shareText)
                         type = "text/plain"

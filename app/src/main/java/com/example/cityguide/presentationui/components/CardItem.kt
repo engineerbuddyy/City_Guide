@@ -3,13 +3,11 @@ package com.example.cityguide.presentationui.components
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cityguide.presentationui.AddressLink
 import com.example.cityguide.presentationui.RatingBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,11 +125,7 @@ fun CardItemUI(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Text(
-                    text = "📍 ${p.address}",
-                    fontSize = 18.sp,
-                    color = Color.Gray
-                )
+                AddressLink(address =  place!!.address)
 
                 Spacer(modifier = Modifier.height(20.dp))
 
