@@ -58,14 +58,19 @@ fun HomeScreen(
         "Temple",
         "Heritage Sites",
         "Forts & Palaces",
+        "Mall",
+        "Restaurant",
         "Museums",
+        "Food Court",
+        "Food Court",
         "Art Galleries",
         "Monuments",
         "Lakes",
         "Mountains",
         "Park",
-        "Food"
-
+        "Resorts",
+        "Waterfalls",
+        "Zoo"
     )
 
     Scaffold(

@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cityguide.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddScreenUI(
     navController: NavController,
@@ -29,7 +30,24 @@ fun AddScreenUI(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val categories = listOf(       "Temple",
+        "Heritage Sites",
+        "Forts & Palaces",
+        "Mall",
+        "Restaurant",
+        "Museums",
+        "Food Court",
+        "Food Court",
+        "Art Galleries",
+        "Monuments",
+        "Lakes",
+        "Mountains",
+        "Park",
+        "Resorts",
+        "Waterfalls",
+        "Zoo")
 
+    var expanded by remember { mutableStateOf(false) }
 
     val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -41,7 +59,6 @@ fun AddScreenUI(
         Log.d("AddScreenUI", "Selected Image URI: $uri")
     }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +68,7 @@ fun AddScreenUI(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top=10.dp)
+                .padding(top = 10.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -60,7 +77,7 @@ fun AddScreenUI(
                 Text(text = state.error!!, color = MaterialTheme.colorScheme.error)
             }
 
-            if(state.image != null){
+            if (state.image != null) {
                 state.image?.let {
                     Image(
                         bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
@@ -70,10 +87,7 @@ fun AddScreenUI(
                             .padding(bottom = 8.dp)
                     )
                 }
-
-            }
-            else{
-
+            } else {
                 Image(
                     painter = painterResource(id = R.drawable.mainimg),
                     contentDescription = "Sample Image",
@@ -81,7 +95,6 @@ fun AddScreenUI(
                         .size(200.dp)
                         .padding(bottom = 8.dp)
                 )
-
             }
 
             Button(
@@ -107,13 +120,40 @@ fun AddScreenUI(
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
 
-            OutlinedTextField(
-                value = state.category,
-                onValueChange = { viewModel.onValueChange(category = it) },
-                label = { Text("Category") },
-                shape = RoundedCornerShape(18.dp),
-                modifier = Modifier.fillMaxWidth(0.9f)
-            )
+            // ✅ Category dropdown
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                OutlinedTextField(
+                    value = state.category,
+                    onValueChange = {}, // disable typing
+                    readOnly = true,
+                    label = { Text("Category") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(0.9f),
+                    shape = RoundedCornerShape(18.dp)
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    categories.forEach { category ->
+                        DropdownMenuItem(
+                            text = { Text(category) },
+                            onClick = {
+                                viewModel.onValueChange(category = category) // ✅ updates VM
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
 
             OutlinedTextField(
                 value = state.address,
