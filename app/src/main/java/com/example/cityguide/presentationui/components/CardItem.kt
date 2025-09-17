@@ -65,21 +65,26 @@ fun CardItemUI(
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                // Title
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     elevation = CardDefaults.cardElevation(8.dp)
                 ) {
-                    Text(
-                        text = p.placeName,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 32.sp,
-                        color = Color.DarkGray,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 8.dp)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = p.placeName,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 32.sp,
+                            color = Color.DarkGray,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp)
+                        )
+                    }
                 }
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
