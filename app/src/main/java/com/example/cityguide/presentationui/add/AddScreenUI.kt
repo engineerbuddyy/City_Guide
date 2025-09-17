@@ -37,7 +37,6 @@ fun AddScreenUI(
         "Restaurant",
         "Museums",
         "Food Court",
-        "Food Court",
         "Art Galleries",
         "Monuments",
         "Lakes",
