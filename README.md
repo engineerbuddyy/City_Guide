@@ -41,7 +41,9 @@ The app follows MVVM (Model-View-ViewModel) architecture:
 🖥️ View (UI): Composable screens for listing, adding, filtering, reviewing, and sharing places.
 
 
+
 🛠️ Tech Stack
+
 
  💻 Language: Kotlin
 
@@ -52,9 +54,11 @@ The app follows MVVM (Model-View-ViewModel) architecture:
  🔧 Dependency Injection: Hilt
 
  ⏱️ Coroutines: For asynchronous operations
+ 
 
 
 🚀 Future Improvements
+
 
  ☁️ Cloud Backup: Sync places across devices.
 
