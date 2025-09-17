@@ -4,21 +4,21 @@ CityGuide App is an Android application built with Jetpack Compose that allows u
 
 ✨ Features
 
-🏷️ Add Places: Users can add a place with details such as name, description, category, optional image, and rating.
+ 🏷️ Add Places: Users can add a place with details such as name, description, category, optional image, and rating.
 
-📋 View Places: Browse a list of saved places displayed in cards with images, ratings, and basic info.
+ 📋 View Places: Browse a list of saved places displayed in cards with images, ratings, and basic info.
 
-❌ Delete Places: Easily remove unwanted places from the list.
+ ❌ Delete Places: Easily remove unwanted places from the list.
 
-🗂️ Category Filters: Filter places by category, e.g., restaurants, parks, museums, etc.
+ 🗂️ Category Filters: Filter places by category, e.g., restaurants, parks, museums, etc.
 
-📤 Share Place Details: Share information about a place with others via intents.
+ 📤 Share Place Details: Share information about a place with others via intents.
 
-⭐ Rating: Users can add ratings to places.
+ ⭐ Rating: Users can add ratings to places.
 
-💾 Offline Storage: All data is stored locally using Room Database.
+ 💾 Offline Storage: All data is stored locally using Room Database.
 
-🎨 Clean UI: Built entirely with Jetpack Compose for a modern, responsive interface.
+ 🎨 Clean UI: Built entirely with Jetpack Compose for a modern, responsive interface.
 
 📸 Screenshots
 <p align="center">
@@ -43,21 +43,21 @@ The app follows MVVM (Model-View-ViewModel) architecture:
 
 🛠️ Tech Stack
 
-💻 Language: Kotlin
+ 💻 Language: Kotlin
 
-🎨 UI Framework: Jetpack Compose
+ 🎨 UI Framework: Jetpack Compose
 
-🗄️ Database: Room Database
+ 🗄️ Database: Room Database
 
-🔧 Dependency Injection: Hilt
+ 🔧 Dependency Injection: Hilt
 
-⏱️ Coroutines: For asynchronous operations
+ ⏱️ Coroutines: For asynchronous operations
 
 
 🚀 Future Improvements
 
-☁️ Cloud Backup: Sync places across devices.
+ ☁️ Cloud Backup: Sync places across devices.
 
-🗺️ Map Integration: Show places and directions (optional future update).
+ 🗺️ Map Integration: Show places and directions (optional future update).
 
-❤️ Already wrote code for animation , integrate while clicking heart i.e Bookmark.
+ ❤️ Already wrote code for animation , integrate while clicking heart i.e Bookmark.
