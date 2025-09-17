@@ -25,8 +25,7 @@ CityGuide App is an Android application built with Jetpack Compose that allows u
 <img src="https://github.com/engineerbuddyy/City_Guide/blob/ae6f4789430189fa2b60391ef1689e781caebabe/Homescreen.jpeg" width="400">
 <img src="https://github.com/engineerbuddyy/City_Guide/blob/ae6f4789430189fa2b60391ef1689e781caebabe/Addscreen.jpeg" width="400">
 <img src="https://github.com/engineerbuddyy/City_Guide/blob/ae6f4789430189fa2b60391ef1689e781caebabe/Bookmark.jpeg" width="400">
-<img src="https://github.com/engineerbuddyy/City_Guide/blob/ae6f4789430189fa2b60391ef1689e781caebabe/Category.jpeg
-" width="400">
+<img src="https://github.com/engineerbuddyy/City_Guide/blob/ae6f4789430189fa2b60391ef1689e781caebabe/Category.jpeg" width="400">
 <img src="https://github.com/engineerbuddyy/City_Guide/blob/ae6f4789430189fa2b60391ef1689e781caebabe/PlaceDetail.jpeg" width="400">
 </p>
 
