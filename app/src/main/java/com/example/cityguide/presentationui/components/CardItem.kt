@@ -23,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.cityguide.presentationui.AddressLink
 import com.example.cityguide.presentationui.RatingBar
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +49,11 @@ fun CardItemUI(
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -88,9 +94,10 @@ fun CardItemUI(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                p.image?.let {
-                    Image(
-                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
+
+                p.imageUri?.let { uri ->
+                    AsyncImage(
+                        model = File(place!!.imageUri),
                         contentDescription = p.placeName,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -100,7 +107,6 @@ fun CardItemUI(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -108,7 +114,13 @@ fun CardItemUI(
                 ) {
                     AssistChip(
                         onClick = {},
-                        label = { Text(text = p.category, fontSize = 18.sp, fontWeight = FontWeight.Bold) },
+                        label = {
+                            Text(
+                                text = p.category,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
                         shape = RoundedCornerShape(12.dp),
                         colors = AssistChipDefaults.assistChipColors(
                             containerColor = Color(0xFFf0f0f0),
@@ -130,7 +142,7 @@ fun CardItemUI(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                AddressLink(address =  place!!.address)
+                AddressLink(address = place!!.address)
 
                 Spacer(modifier = Modifier.height(20.dp))
 

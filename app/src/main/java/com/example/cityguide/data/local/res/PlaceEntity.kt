@@ -10,7 +10,8 @@ data class PlaceEntity(
     val placeName: String,
     val category: String,
     val description: String,
-    val image: ByteArray? = null,
+    //Save path not image
+    val imageUri: String? ,
     val rating: Double?=0.0 ,
     val address: String,
     val isBookmarked: Boolean = false

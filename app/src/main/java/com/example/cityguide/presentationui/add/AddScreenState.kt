@@ -6,7 +6,7 @@ data class AddScreenState(
     val description: String = "",
     val address: String = "",
     val rating: String = "",
-    val image: ByteArray? = null,
+    val imageUri: String? = null,
     val isSaving: Boolean = false,
     val error: String? = null
 )

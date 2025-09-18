@@ -34,8 +34,10 @@ import com.example.cityguide.data.local.res.PlaceEntity
 import com.example.cityguide.Navigation.Routes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImage
 import com.example.cityguide.R
 import com.example.cityguide.presentationui.RatingBar
+import java.io.File
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +63,6 @@ fun HomeScreen(
         "Mall",
         "Restaurant",
         "Museums",
-        "Food Court",
         "Food Court",
         "Art Galleries",
         "Monuments",
@@ -241,28 +242,54 @@ fun PlaceItem(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+//            Box(
+//                modifier = Modifier
+//                    .size(90.dp)
+//                    .clip(RoundedCornerShape(14.dp))
+//            ) {
+//                place.image?.let {
+//                    Image(
+//                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
+//                        contentDescription = place.placeName,
+//                        modifier = Modifier.fillMaxSize()
+//                    )
+//                } ?: Box(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .background(Color.LightGray),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Image(
+//                        painter = painterResource(id = R.drawable.noimg),
+//                        contentDescription = "Sample Image",
+//                        modifier = Modifier.size(50.dp)
+//                    )
+//                }
+//            }
             Box(
                 modifier = Modifier
                     .size(90.dp)
                     .clip(RoundedCornerShape(14.dp))
             ) {
-                place.image?.let {
-                    Image(
-                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
+                if (!place.imageUri.isNullOrBlank()) {
+                    AsyncImage(
+                        model = File(place.imageUri),
                         contentDescription = place.placeName,
                         modifier = Modifier.fillMaxSize()
                     )
-                } ?: Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.LightGray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.noimg),
-                        contentDescription = "Sample Image",
-                        modifier = Modifier.size(50.dp)
-                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.LightGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.noimg),
+                            contentDescription = "No Image",
+                            modifier = Modifier.size(50.dp)
+                        )
+                    }
                 }
             }
 

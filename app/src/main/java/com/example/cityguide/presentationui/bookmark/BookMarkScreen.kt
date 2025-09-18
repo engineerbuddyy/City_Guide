@@ -3,6 +3,9 @@ package com.example.cityguide.presentationui.bookmark
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,8 +28,20 @@ fun BookmarkScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text("Bookmarked Places", style = MaterialTheme.typography.bodyLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, fontSize = 30.sp)
-
+                    Text(
+                        "Bookmarked Places",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        fontSize = 30.sp
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFda0c49)
@@ -56,8 +71,8 @@ fun BookmarkScreen(
                         .fillMaxSize()
                         .padding(padding)
                 ) {
-                    items(state.places.size) { place ->
-                        PlaceItem(place = state.places[place], navController = navController)
+                    items(state.places.size) { index ->
+                        PlaceItem(place = state.places[index], navController = navController)
                     }
                 }
             }

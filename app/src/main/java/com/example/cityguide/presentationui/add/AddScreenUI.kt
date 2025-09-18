@@ -14,13 +14,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.cityguide.R
+import java.io.File
+import android.net.Uri
+import com.example.cityguide.ImageUtils
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,8 +33,8 @@ fun AddScreenUI(
     viewModel: AddScreenViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
-    val categories = listOf(       "Temple",
+    val categories = listOf(
+        "Temple",
         "Heritage Sites",
         "Forts & Palaces",
         "Mall",
@@ -44,19 +48,36 @@ fun AddScreenUI(
         "Park",
         "Resorts",
         "Waterfalls",
-        "Zoo")
+        "Zoo"
+    )
+
+
+
+//    val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+//        uri?.let {
+//            val inputStream = context.contentResolver.openInputStream(it)
+//            val byteArray = inputStream?.readBytes()
+//            inputStream?.close()
+//            viewModel.onValueChange(image = byteArray)
+//        }
+//        Log.d("AddScreenUI", "Selected Image URI: $uri")
+//    }
 
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+    val pickImage = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
         uri?.let {
-            val inputStream = context.contentResolver.openInputStream(it)
-            val byteArray = inputStream?.readBytes()
-            inputStream?.close()
-            viewModel.onValueChange(image = byteArray)
+            val savedPath = ImageUtils.saveImageToInternalStorage(context, it)
+            if (savedPath != null) {
+                viewModel.onValueChange(imageUri = savedPath)
+            }
         }
-        Log.d("AddScreenUI", "Selected Image URI: $uri")
     }
+
+
 
     Box(
         modifier = Modifier
@@ -68,6 +89,7 @@ fun AddScreenUI(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp)
+                .imePadding() // Very important to make sure keyboard don't hide data fields
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -76,23 +98,54 @@ fun AddScreenUI(
                 Text(text = state.error!!, color = MaterialTheme.colorScheme.error)
             }
 
-            if (state.image != null) {
-                state.image?.let {
-                    Image(
-                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
-                        contentDescription = "Selected Image",
-                        modifier = Modifier
-                            .size(200.dp)
-                            .padding(bottom = 8.dp)
-                    )
-                }
+//            if (state.image != null) {
+//                state.image?.let {
+//                    Image(
+//                        bitmap = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap(),
+//                        contentDescription = "Selected Image",
+//                        modifier = Modifier
+//                            .size(200.dp)
+//                            .padding(bottom = 8.dp)
+//                    )
+//                }
+//            } else {
+//                Image(
+//                    painter = painterResource(id = R.drawable.mainimg),
+//                    contentDescription = "Sample Image",
+//                    modifier = Modifier
+//                        .size(200.dp)
+//                        .padding(bottom = 8.dp)
+//                )
+//            }
+
+//            if (state.imageUri != null) {
+//                AsyncImage(
+//                    model = state.imageUri,
+//                    contentDescription = "Selected Image",
+//                    modifier = Modifier.size(200.dp)
+//                )
+//            } else {
+//                Image(
+//                    painter = painterResource(id = R.drawable.mainimg),
+//                    contentDescription = "Default Image",
+//                    modifier = Modifier.size(200.dp)
+//                )
+//            }
+
+
+
+            //Show picked image
+            if (!state.imageUri.isNullOrEmpty()) {
+                AsyncImage(
+                    model = File(state.imageUri),
+                    contentDescription = "Selected Image",
+                    modifier = Modifier.size(200.dp)
+                )
             } else {
                 Image(
                     painter = painterResource(id = R.drawable.mainimg),
-                    contentDescription = "Sample Image",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .padding(bottom = 8.dp)
+                    contentDescription = "Default Image",
+                    modifier = Modifier.size(200.dp)
                 )
             }
 
@@ -119,7 +172,7 @@ fun AddScreenUI(
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
 
-            // ✅ Category dropdown
+            //Category dropdown
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded }
@@ -162,13 +215,30 @@ fun AddScreenUI(
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
 
+            var ratingError by remember { mutableStateOf<String?>(null) }
+
             OutlinedTextField(
                 value = state.rating,
-                onValueChange = { viewModel.onValueChange(rating = it) },
+                onValueChange = { input ->
+                    val cleaned = input.filter { it.isDigit() || it == '.' }
+                    if (cleaned.isEmpty()) {
+                        viewModel.onValueChange(rating = "")
+                        ratingError = null
+                    } else {
+                        val value = cleaned.toDoubleOrNull()
+                        if (value != null && value in 0.0..5.0) {
+                            viewModel.onValueChange(rating = cleaned)
+                            ratingError = null
+                        } else {
+                            ratingError = "Rating must be between 0 and 5"
+                        }
+                    }
+                },
                 label = { Text("Rating (0-5)") },
                 shape = RoundedCornerShape(18.dp),
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
+
 
             Button(
                 onClick = { viewModel.addPlace { navController.popBackStack() } },
