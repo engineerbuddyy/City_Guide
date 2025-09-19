@@ -65,9 +65,11 @@ The app follows MVVM (Model-View-ViewModel) architecture:
  🗺️ Map Integration: Show places and directions (optional future update).
 
  ❤️ Already wrote code for animation , integrate while clicking heart i.e Bookmark.
+ 
 
 
 🧠 Some of the most common and interesting Errors-
+
 
   1.Can we use suspend and Flow together in a function signature?
 
