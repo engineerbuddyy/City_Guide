@@ -65,3 +65,36 @@ The app follows MVVM (Model-View-ViewModel) architecture:
  🗺️ Map Integration: Show places and directions (optional future update).
 
  ❤️ Already wrote code for animation , integrate while clicking heart i.e Bookmark.
+
+
+🧠 Some of the most common and interesting Errors-
+
+  1.Can we use suspend and Flow together in a function signature?
+
+  Sol-No, you cannot use suspend and Flow together.
+
+   suspend → a function that runs once and returns a single value.
+
+   Flow → a cold asynchronous stream that can emit multiple values over time. 
+   So make sure not make a function suspend if you are using Flow
+
+  2.What happens when you change the schema version in Room?
+
+  Sol-
+    Write a Migration (best practice)
+
+   Use destructive migration (testing only) : .fallbackToDestructiveMigration()
+
+  3.What causes the error Row too big to fit into CursorWindow?
+
+   Its a Room/SQLite error .It happens when one Column usually a string or ByteArray is too large for SQLite Cursor Window (2 MB limit per row).Storing images (BITMAP)   
+   directly in the databases as ByteArray(too Big).
+
+  4.Why does the keyboard overlap (cover) a Row or TextField in Jetpack Compose?
+
+   Sol- Use .imePadding() 
+
+  5.What causes the error Source must not be null?
+
+   Sol- Match the version of Serialization dependency with the coroutine dependency.
+
